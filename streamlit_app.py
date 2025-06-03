@@ -12,8 +12,9 @@ if st.button("Enviar a Make"):
         response = requests.post(url, json=data)
 
         if response.status_code == 200:
+            respuesta_make = response.text
             st.success("✅ Mensaje enviado a Make.")
-            st.write(response)
+            st.write(respuesta_make)
         else:
             st.error("❌ Error al enviar los datos.")
     else:
