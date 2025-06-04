@@ -5,7 +5,7 @@ from datetime import datetime
 st.title("📡 Conexión Streamlit → Make con Webhook")
 
 with st.form("my_form"):
-    st.write("Agendar Cita.")
+    st.subheader("Agendar Cita.")
 
     nombre = st.text_input("Nombre")
     correo = st.text_input("Correo Electrónico")
