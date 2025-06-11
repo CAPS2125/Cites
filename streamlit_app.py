@@ -35,16 +35,21 @@ with st.form("presentation_form"):
             with st.spinner("🛠️ Generando presentación..."):
                 # URL del Webhook de Make.com
                 response = requests.post("https://hook.eu2.make.com/ffs14tm3lqou5owigyec97iomsvqmc9u", json=payload)
-
+                st.session_state["pdf_data"] = response.content
+                
             if response.status_code == 200:
                 st.success("✅ Tu presentación fue generada correctamente.")
             else:
                 st.error(f"❌ Error al generar la presentación. Código: {response.status_code}")
         except Exception as e:
             st.error(f"❌ Ocurrió un error al conectar con el servidor: {e}")
-st.download_button(
-    label="📥 Descargar presentación (PDF)",
-    data=response.content,
-    file_name="presentacion_generada.pdf",
-    mime="application/pdf"
+            
+# Mostrar el botón de descarga si ya se recibió el PDF
+if st.session_state["pdf_data"]:
+    st.download_button(
+        label="📥 Descargar presentación (PDF)",
+        data=st.session_state["pdf_data"],
+        file_name="presentacion_generada.pdf",
+        mime="application/pdf"
     )
+
