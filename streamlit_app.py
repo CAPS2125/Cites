@@ -1,49 +1,51 @@
 import streamlit as st
 import requests
-from datetime import datetime
 
-st.title("📡 Conexión Streamlit → Make con Webhook")
+# URL del Webhook de Make.com
+WEBHOOK_URL = "https://hook.us1.make.com/tu-webhook-url-aqui"
 
-Agendador, Presentador = st.tabs(["Agendador", "Presentaciones"])
+st.title("🎯 Generador de Presentaciones")
 
-with Agendador:
-    with st.form("my_form"):
-        st.subheader("Agendar Cita.")
+st.write("Completa el siguiente formulario para generar automáticamente una presentación profesional en formato PDF.")
 
-        nombre = st.text_input("Nombre")
-        correo = st.text_input("Correo Electrónico")
-        motivo = st.text_area("Motivo")
-        fecha = st.date_input("Día")
-        hora = st.time_input("Hora")
+st.info("📄 La presentación generada tendrá **7 diapositivas** y se entregará en **formato PDF**.")
 
-        submitted = st.form_submit_button("Submit")
+with st.form("presentation_form"):
+    titulo = st.text_input("Título de la presentación")
+    tipo = st.selectbox("Tipo de presentación", ["Propuesta", "Informe", "Pitch", "Otro"])
+    objetivo = st.text_area("Objetivo del contenido", help="Describe brevemente qué deseas comunicar o lograr con la presentación.")
+    audiencia = st.selectbox("Audiencia objetivo", ["Cliente", "Inversores", "Gerencia", "Equipo interno", "Otro"])
+    estilo = st.selectbox("Estilo deseado", ["Formal", "Creativo", "Corporativo", "Minimalista", "Otro"])
+    idioma = st.selectbox("Idioma", ["Español", "Inglés", "Otro"])
+    ideas = st.text_area("Puntos clave o ideas principales", help="Enumera o describe los temas que debe incluir la presentación.")
 
-        if submitted:
-            if not all([nombre, correo, motivo]):
-                st.warning("⚠️ Todos los campos son obligatorios.")
+    submit = st.form_submit_button("Generar y descargar PDF")
+
+    if submit:
+        payload = {
+            "titulo": titulo,
+            "tipo": tipo,
+            "objetivo": objetivo,
+            "audiencia": audiencia,
+            "estilo": estilo,
+            "idioma": idioma,
+            "ideas": ideas,
+            "formato": "PDF",  # fijo
+        }
+
+        try:
+            with st.spinner("🛠️ Generando presentación..."):
+                response = requests.post(WEBHOOK_URL, json=payload)
+
+            if response.status_code == 200:
+                st.success("✅ Tu presentación fue generada correctamente.")
+                st.download_button(
+                    label="📥 Descargar presentación (PDF)",
+                    data=response.content,
+                    file_name="presentacion_generada.pdf",
+                    mime="application/pdf"
+                )
             else:
-                # Combinar fecha y hora como string (opcional si quieres enviar juntos)
-                fecha_str = fecha.strftime("%Y-%m-%d")
-                hora_str = hora.strftime("%H:%M")
-
-                data = {
-                "nombre": nombre,
-                "correo": correo,
-                "motivo": motivo,
-                "fecha": fecha_str,
-                "hora": hora_str
-                }
-
-                url = "https://hook.eu2.make.com/s5klmux6w3w21ewees4d9nxio81lt644"  # Reemplaza con tu URL real
-                try:
-                    response = requests.post(url, json=data)
-
-                    if response.status_code == 200:
-                        st.success("✅ Mensaje enviado a Make.")
-                        st.subheader("📩 Cita agendada. Revisa tu correo de confirmación.")
-                    else:
-                        st.error(f"❌ Error al enviar los datos. Código: {response.status_code}")
-                except Exception as e:
-                    st.error(f"❌ Error de conexión: {e}")
-with Presentador:
-    st.subheader("Generar Presentacion")
+                st.error(f"❌ Error al generar la presentación. Código: {response.status_code}")
+        except Exception as e:
+            st.error(f"❌ Ocurrió un error al conectar con el servidor: {e}")
