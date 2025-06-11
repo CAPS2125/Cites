@@ -48,9 +48,4 @@ with st.form("presentation_form"):
             
 # Mostrar el botón de descarga si ya se recibió el PDF
 if st.session_state["pdf_data"]:
-    st.download_button(
-        label="📥 Descargar presentación (PDF)",
-        data=st.session_state["pdf_data"],
-        file_name="presentacion_generada.pdf",
-        mime="application/pdf"
-    )
+    st.subheader(st.session_state["pdf_data"])
