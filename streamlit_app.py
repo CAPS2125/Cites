@@ -52,4 +52,3 @@ if st.session_state["pdf_data"]:
         file_name="presentacion_generada.pdf",
         mime="application/pdf"
     )
-
