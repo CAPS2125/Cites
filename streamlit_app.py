@@ -4,7 +4,7 @@ from datetime import datetime
 
 st.title("📡 Conexión Streamlit → Make con Webhook")
 
-Agendador, Presentador = st.tabs(2)
+Agendador, Presentador = st.tabs(["Agendador", "Presentaciones"])
 
 with Agendador:
     with st.form("my_form"):
