@@ -46,6 +46,6 @@ with st.form("presentation_form"):
         except Exception as e:
             st.error(f"❌ Ocurrió un error al conectar con el servidor: {e}")
             
-# Mostrar el botón de descarga si ya se recibió el PDF
+# Mostrar mensaje si ya se envio el archivo por correo.
 if st.session_state["pdf_data"]:
     st.subheader(st.session_state["pdf_data"])
