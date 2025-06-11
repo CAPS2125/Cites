@@ -2,10 +2,12 @@ import streamlit as st
 import requests
 
 st.title("🎯 Generador de Presentaciones")
-
 st.write("Completa el siguiente formulario para generar automáticamente una presentación profesional en formato PDF.")
-
 st.info("📄 La presentación generada tendrá **7 diapositivas** y se entregará en **formato PDF**.")
+
+# Inicia una clave en session_state para guardar el PDF
+if "pdf_data" not in st.session_state:
+    st.session_state["pdf_data"] = None
 
 with st.form("presentation_form"):
     titulo = st.text_input("Título de la presentación")
