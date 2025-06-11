@@ -9,7 +9,7 @@ st.info("📄 La presentación generada tendrá **7 diapositivas** y se entregar
 
 with st.form("presentation_form"):
     titulo = st.text_input("Título de la presentación")
-    autor = st.text_input("Autor de la Presentacion")
+    autor = st.text_input("Autor de la Presentacion") # Añadir Autor
     tipo = st.selectbox("Tipo de presentación", ["Pitch", "Propuesta", "Investigativo"])
     objetivo = st.text_area("Objetivo del contenido", help="Describe brevemente qué deseas comunicar o lograr con la presentación.")
     audiencia = st.selectbox("Audiencia objetivo", ["Cliente", "Inversores", "Estudiantes", "Viewers"])
